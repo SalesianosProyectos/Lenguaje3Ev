@@ -1,0 +1,78 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formularios para Contactos</title>
+
+    <style>
+        label {
+            display: flex;
+        }
+
+        input {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Insertar Contactos</h1>
+    <form id="contactoForm">
+        <label for="id">ID</label>
+        <input type="number" min='0' id="id" name="id" required><br>
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" required><br>
+        <label for="apellido">Apellido</label>
+        <input type="text" id="apellido" name="apellido" required><br>
+        <label for="telefono">Telefono</label>
+        <input type="number" id="telefono" name="telefono" required><br>
+
+        <button type="submit">Agregar Contactos</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var request = window.indexedDB.open('Contactos', 1);
+
+            request.onerror = function (event) {
+                console.log('Error al abrir la base de datos');
+            };
+
+            request.onsuccess = function (event) {
+                var db = event.target.result;
+
+                contactoForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    var transaction = db.transaction(['Contactos'], 'readwrite');
+                    var store = transaction.objectStore('Contactos');
+
+                    var contacto = {
+                        id: parseInt(id.value),
+                        nombre: nombre.value,
+                        apellido: apellido.value,
+                        telefono: parseInt(telefono.value)
+                    };
+
+                    var request = store.add(contacto);
+
+                    request.onsuccess = function (event) {
+                        console.log('Contacto agregado');
+                    };
+
+                    request.onerror = function (event) {
+                        console.log('Error al agregar el contacto');
+                    };
+                });
+            };
+
+            request.onupgradeneeded = function (event) {
+                var db = event.target.result;
+                var store = db.createObjectStore('Contactos', { keyPath: 'id' });
+            };
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu desplegable por especialidad</title>
+</head>
+
+<body>
+    <h1>Menu desplegable por especialidad</h1>
+    <select id="especialidades"></select>
+    <ul id="profesores"></ul>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var request = window.indexedDB.open('Profesores', 1);
+
+            request.onerror = function (event) {
+                console.log('Error al abrir la base de datos');
+            };
+
+            request.onsuccess = function (event) {
+                var db = event.target.result;
+                var transaction = db.transaction(['profesores'], 'readonly');
+                var store = transaction.objectStore('profesores');
+                var request = store.getAll();
+
+                request.onsuccess = function (event) {
+                    var profesores = event.target.result;
+                    var especialidades = [...new Set(profesores.map(profesor => profesor.especialidad))];
+                    var select = document.getElementById('especialidades');
+
+
+                    var option = document.createElement('option');
+                    option.value = '';
+                    option.text = 'Seleccione una especialidad';
+                    select.appendChild(option);
+
+                    especialidades.forEach(especialidad => {
+                        var option = document.createElement('option');
+                        option.value = especialidad;
+                        option.text = especialidad;
+                        select.appendChild(option);
+                    });
+
+                    select.addEventListener('change', function () {
+                        var ul = document.getElementById('profesores');
+                        ul.innerHTML = '';
+                        if (this.value) {  
+                            var profesoresFiltrados = profesores.filter(profesor => profesor.especialidad === this.value);
+                            profesoresFiltrados.forEach(profesor => {
+                                var li = document.createElement('li');
+                                li.textContent = profesor.nombre;
+                                ul.appendChild(li);
+                            });
+                        }
+                    });
+                };
+            };
+
+            request.onupgradeneeded = function (event) {
+                var db = event.target.result;
+                var store = db.createObjectStore('profesores', { keyPath: 'id', autoIncrement: true });
+                store.createIndex('especialidad', 'especialidad', { unique: false });
+                store.createIndex('nombre', 'nombre', { unique: false });
+            };
+        });
+    </script>
+</body>
+
+</html>

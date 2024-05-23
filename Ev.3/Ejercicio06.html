@@ -1,0 +1,76 @@
+<html>
+
+<head>
+    <title>Almacenamiento de Contactos con IndexedDB</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            //    Abrir o crear la base de datos
+            var request = window.indexedDB.open('Contactos', 1);
+
+            request.onsuccess = function (event) {
+                console.log('Base de datos abierta o creada correctamente');
+                var db = event.target.result;
+                var transaction = db.transaction(['Contactos'], 'readwrite');
+                var store = transaction.objectStore('Contactos');
+
+                //    Añadir registros
+                var Contacto1 = { id: 1, nombre: 'Juan', apellido: 'Hernandez', telefono: '123456789' };
+                var addRequest = store.add(Contacto1);
+                addRequest.onsuccess = function (event) {
+                    console.log('Contacto1 añadido correctamente');
+                };
+
+                var Contacto2 = { id: 2, nombre: 'Ana', apellido: 'Lapetra', telefono: '987654321' };
+                var addRequest2 = store.add(Contacto2);
+                addRequest2.onsuccess = function (event) {
+                    console.log('Contacto2 añadido correctamente');
+                };
+
+                //   Mostrar registros en consola
+                var getRequest = store.get(1);
+                getRequest.onsuccess = function (event) {
+                    console.log('Contacto1: ', getRequest.result);
+                };
+
+                var getRequest2 = store.get(2);
+                getRequest2.onsuccess = function (event) {
+                    console.log('Contacto2: ', getRequest2.result);
+                };
+            };
+
+            //   Manejar el evento de actualización de la base de datos
+            request.onupgradeneeded = function (event) {
+                var db = event.target.result;
+                var store = db.createObjectStore('Contactos', { keyPath: 'id' });
+            };
+
+            
+
+        });
+
+    </script>
+
+    <style>
+        h1 {
+            color: aquamarine;
+            background-color: cornflowerblue;
+            border-radius: 10px;
+            text-align: center;
+            padding: 10px;
+
+        }
+
+        p {
+            color: cornflowerblue;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Almacenamiento de Contactos con IndexedDB</h1>
+    <p>Ver la consola del navegador para ver los registros almacenados</p>
+</body>
+
+</html>

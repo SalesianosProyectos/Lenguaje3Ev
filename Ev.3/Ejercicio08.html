@@ -1,0 +1,44 @@
+<html>
+    <body>
+        <h1>Contactos</h1>
+        <ul id="contactosList"></ul>
+    </body>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            //    Abrir o crear la base de datos
+            var request = window.indexedDB.open('Contactos', 1);
+
+            request.onerror = function (event) {
+                console.log('Error al abrir la base de datos');
+            };
+
+            request.onsuccess = function (event) {
+                var db = event.target.result;
+
+                // Obtener los datos de la base de datos
+                var transaction = db.transaction(['Contactos'], 'readonly');
+                var store = transaction.objectStore('Contactos');
+                var cursorRequest = store.openCursor();
+
+                cursorRequest.onsuccess = function (event) {
+                    var cursor = event.target.result;
+                    if (cursor) {
+                        var li = document.createElement('ul');
+                        li.textContent = `ID: ${cursor.value.id}, Nombre: ${cursor.value.nombre}, Apellido: ${cursor.value.apellido}, Teléfono: ${cursor.value.telefono}`;
+                        contactosList.appendChild(li);
+                        cursor.continue();
+                    } else {
+                        console.log('No hay más contactos');
+                    }
+                };
+
+                request.onupgradeneeded = function (event) {
+                    var db = event.target.result;
+                    var store = db.createObjectStore('Contactos', { keyPath: 'id' });
+                };
+            }
+
+        });
+    </script>
+</html>

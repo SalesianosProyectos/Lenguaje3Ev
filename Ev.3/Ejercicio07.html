@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Visualizador de Contactos</title>
+    </head>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        //    Abrir o crear la base de datos
+        var request = window.indexedDB.open('Contactos', 1);
+
+        request.onsuccess = function (event) {
+            var db = event.target.result;
+            var transaction = db.transaction(['Contactos'], 'readonly');
+            var store = transaction.objectStore('Contactos');
+            var cursorRequest = store.openCursor();
+
+            cursorRequest.onsuccess = function (event) {
+                var cursor = event.target.result;
+                if (cursor) {
+                    var li = document.createElement('li');
+                    li.textContent = `ID: ${cursor.value.id}, Nombre: ${cursor.value.nombre}, Apellido: ${cursor.value.apellido}, Teléfono: ${cursor.value.telefono}`;
+                    contactosList.appendChild(li);
+                    cursor.continue();
+                } else {
+                    console.log('No hay más contactos');
+                }
+            };
+        }
+
+        //   Manejar el evento de actualización de la base de datos
+        request.onupgradeneeded = function (event) {
+                var db = event.target.result;
+                var store = db.createObjectStore('Contactos', { keyPath: 'id' });
+            };
+    });
+    </script>
+
+    <style>
+        h1 {
+            color: aquamarine;
+            background-color: cornflowerblue;
+            border-radius: 10px;
+            text-align: center;
+            padding: 10px;
+            font-family: cursive;
+            font-size: 30px;
+            box-shadow: 0px 5px 10px 1px black;
+        }
+
+        ul {
+            margin: 0 auto;
+            align-items: center;
+            list-style: none;
+        }
+
+        li {
+            padding: 5px;
+            margin: 5px;
+        }
+    </style>
+
+    <body>
+        <h1><u>Contactos</u></h1>
+        <ul id="contactosList"></ul>
+    </body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inserción de categorias</title>
+</head>
+
+<body>
+    <h1>Inserción de Categorias</h1>
+    <select id="categorias"></select>
+    <ul id="productos"></ul>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var request = window.indexedDB.open('Categorias', 1);
+
+            request.onerror = function (event) {
+                console.log('Error al abrir la base de datos');
+            };
+
+            request.onsuccess = function (event) {
+                var db = event.target.result;
+                var transaction = db.transaction(['categorias'], 'readonly');
+                var store = transaction.objectStore('categorias');
+                var request = store.getAll();
+
+                request.onsuccess = function (event) {
+                    var productos = event.target.result;
+                    var categorias = [...new Set(productos.map(categorias => categorias.categoria))];
+                    var select = document.getElementById('categorias');
+
+                    categorias.forEach(categoria => {
+                        var option = document.createElement('li');
+                        option.value = categoria;
+                        option.text = categoria;
+                        select.appendChild(option);
+                    });
+
+                    select.addEventListener('change', function () {
+                        var ul = document.getElementById('productos');
+                        ul.innerHTML = '';
+                        if (this.value) {
+                            var productosFiltrados = productos.filter(producto => producto.categoria === this.value);
+                            productosFiltrados.forEach(producto => {
+                                var li = document.createElement('li');
+                                li.textContent = producto.nombre;
+                                ul.appendChild(li);
+                            });
+                        }
+                    });
+                };
+            };
+
+            request.onupgradeneeded = function (event) {
+                var db = event.target.result;
+                var store = db.createObjectStore('productos', { keyPath: 'id', autoIncrement: true });
+                store.createIndex('categoriaIndex', 'categoria', { unique: false });
+                store.createIndex('nombreIndex', 'nombre', { unique: false });
+
+            };
+        });
+    </script>
+</body>
+
+</html>

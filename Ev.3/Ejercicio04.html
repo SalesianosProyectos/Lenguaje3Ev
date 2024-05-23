@@ -1,0 +1,39 @@
+<!-- Esto sale en el examen -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SessionStorage</title>
+    <script type="application/javascript">
+        window.onload = mostrar;
+
+        function mostrar() {
+            sessionStorage.clear();
+            contenido.innerHTML = sessionStorage.length;
+            sessionStorage.setItem("Juan", 18);
+            contenido.innerHTML = sessionStorage.length;
+            contenido.innerHTML += "<br>" + sessionStorage.key(0);
+            contenido.innerHTML += "<br>" + sessionStorage.getItem("Juan");
+            sessionStorage["Maria"] = 20;
+            contenido.innerHTML += "<br>" + sessionStorage.length;
+            contenido.innerHTML += "<br>" + sessionStorage.key(1);
+            contenido.innerHTML += "<br>" + sessionStorage.getItem("Maria");
+            sessionStorage.removeItem("Juan");
+            contenido.innerHTML += "<br>" + sessionStorage.length;
+            contenido.innerHTML += "<br>" + sessionStorage.key(1);
+            contenido.innerHTML += "<br>" + sessionStorage.key(0);
+            sessionStorage.clear();
+            contenido.innerHTML += "<br>" + sessionStorage.length;
+
+
+        }   
+    </script>
+    
+
+</head>
+<body>
+    <div id="contenido"></div>
+</body>
+</html>

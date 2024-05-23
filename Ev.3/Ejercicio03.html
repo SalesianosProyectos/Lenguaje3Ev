@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor con HTML5</title>
+
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js" crossorigin="anonymous"></script>
+    <script src="Ev.3.js/Ejercicio03.js"></script>
+    <link rel="stylesheet" href="Ev.3css/Ejercicio03.css">
+
+</head>
+<body>
+
+    <div id="principal">
+        <h2>Mensajes publicados</h2>
+        <div id="mensajes"></div>
+        <div id="editor">
+            <h3>Publica aquí tu mensaje</h3>
+            <div id="botones">
+                <img src="iconos/negrita.jpg" class="boton" onclick="negrita()">
+                <img src="iconos/cursiva.jpg" class="boton" onclick="cursiva()">
+                <img src="iconos/subrayado.jpg" class="boton" onclick="subrayado()">
+                <img src="iconos/alini.jpg" class="boton" onclick="alineaIzquierda()">
+                <img src="iconos/alinc.jpg" class="boton" onclick="alineaCentro()">
+                <img src="iconos/alind.jpg" class="boton" onclick="alineaDerecha()">
+                <img src="iconos/alinf.jpg" class="boton" onclick="alineaf()">
+                <img src="iconos/lno.jpg" class="boton" onclick="listano()">
+                <img src="iconos/lor.jpg" class="boton" onclick="listaor()">
+                <img src="iconos/subi.jpg" class="boton" onclick="subi()">
+                <img src="iconos/supi.jpg" class="boton"onclick="supi()">
+                <img src="iconos/fco.jpg" class="boton" onclick="fco()">
+                <img src="iconos/bco.jpg" class="boton" onclick="bco()">
+                <img src="iconos/imagen.jpg" class="boton" onclick="insertarimg()">
+                <img src="iconos/hipervinculo.jpg" class="boton" onclick="hipervinculo()">
+            </div>
+
+            <div id="contenido" contenteditable="true"></div>
+            <input type="button" value="PUBLICAR" onclick="publicar()">
+        </div>
+    </div>
+    
+</body>
+</html>

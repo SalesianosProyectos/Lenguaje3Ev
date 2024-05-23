@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 para un formulario</title>
+
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js" crossorigin="anonymous"></script>
+
+    <script lang="JavaScript">
+        function mostrarEdad(valor) {
+            verEdad.innerHTML = valor;
+        }
+    </script>
+
+    <style>
+        input[type="submit"] {
+            padding: 10px;
+            margin: 10px 0;
+            border: 0;
+            border-radius: 5px;
+            background-color: #1abc9c;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #13a89e;
+        }
+        
+    </style>
+
+<!--
+    <style>
+        body {
+            padding-top: 50px;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        #container {
+            width: 300px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #ccc;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input[type="text"], input[type="email"], input[type="range"] {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 0;
+            border-radius: 5px;
+            background-color: #1abc9c;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #13a89e;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #ccc;
+        }
+
+        span {
+            font-weight: bold;
+            color: #1abc9c;
+        }
+
+        
+        
+    </style>
+-->
+</head>
+<body>
+    <div id="container">
+    <form action=" ">
+        <h2>Formulario HTML5</h2>
+        <hr>
+        <p>
+            Nombre: <input type="text" name="nombre" autofocus required autocomplete="off">
+            
+        </p>
+
+        <p>
+            E-mail: <input type="email" name="Email" placeholder="Introduzca su correo..." autocomplete="on">
+            
+        </p>
+
+        <p>
+            Color favorito: <input type="color" name="color">
+            
+        </p>
+
+        <p>
+            Edad: <input type="range" min="18" max="70" value="65" name="edad" onchange="mostrarEdad(this.value)"> <span id="verEdad">65</span>
+            
+        </p>
+
+        <p>
+            Web: <input type="url" name="web" autocomplete="off">
+            
+        </p>
+
+        <p>
+            Nº par de 0 al 10: <input type="number" name="par" min="0" max="10" step="2">
+
+        </p>
+
+        <p>
+            Destinatario: <input type="email" name="Destinatario" list="listaDestinatario" autocomplete="on">
+            <datalist id="listaDestinatario">
+                <option value="admin@salesianos.zaragoza.edu">Administrador</option>
+                <option value="reyna.camig23@salesianos.zaragoza.edu">Miguel</option>
+                <option value="agustin.sole@zaragoza.salesianos.edu">agustin Solé</option>
+            </datalist>
+            <hr>
+        </p>
+
+        <p>
+            <input type="submit">
+        </p>
+    </form>    
+</div>
+</body>
+</html>

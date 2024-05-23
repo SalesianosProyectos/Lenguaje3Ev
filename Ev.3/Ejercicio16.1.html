@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inserción de categorias</title>
+</head>
+
+<body>
+    <h1>Inserción de categorias</h1>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var request = window.indexedDB.open('Categorias', 1);
+
+            request.onerror = function (event) {
+                console.log('Error al abrir la base de datos');
+            };
+
+            request.onsuccess = function (event) {
+                var db = event.target.result;
+
+                var transaction = db.transaction(['categorias'], 'readwrite');
+                var store = transaction.objectStore('categorias');
+
+                var categoroaData = [
+                    
+                ];
+
+                productData.forEach(function (producto) {
+                    store.add(producto);
+                });
+
+                var request = store.openCursor();
+
+                request.onsuccess = function (event) {
+                    var cursor = event.target.result;
+
+                    if (cursor) {
+                        console.log('ID: ', cursor.key);
+                        console.log('Nombre: ', cursor.value.nombre);
+                        console.log('Cantidad: ', cursor.value.cantidad);
+
+                        cursor.continue();
+                    }
+                };
+            };
+
+            request.onupgradeneeded = function (event) {
+                var db = event.target.result;
+                var store = db.createObjectStore('categoria', { keyPath: 'id', autoIncrement: true });
+                store.createIndex('categoriaCantidad', 'cantidad', { unique: false });
+                store.createIndex('nombreIndex', 'nombre', { unique: false });
+
+            };
+        });
+    </script>
+</body>
+
+</html>

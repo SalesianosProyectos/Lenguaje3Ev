@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inserción y listado</title>
+</head>
+<body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Abrir o crear la base de datos "Profesores" con la versión 1
+            var request = window.indexedDB.open('Profesores', 1);
+
+            // Manejar errores al abrir la base de datos
+            request.onerror = function (event) {
+                console.log('Error al abrir la base de datos');
+            };
+
+            // Manejar éxito al abrir la base de datos
+            request.onsuccess = function (event) {
+                var db = event.target.result;
+
+                // Manejar éxito al abrir la base de datos
+                var transaction = db.transaction(['profesores'], 'readwrite');
+                var store = transaction.objectStore('profesores');
+
+                var profData = [
+                    { nombre: 'Juan', especialidad: 'Matemáticas' },
+                    { nombre: 'Ana', especialidad: 'Física' },
+                    { nombre: 'Luis', especialidad: 'Química' },
+                    { nombre: 'María', especialidad: 'Biología' }
+                ];
+
+                // Agregar datos de profesores a la base de datos
+                profData.forEach(function (profesor) {
+                    store.add(profesor);
+                });
+
+                // Abrir un cursor para listar los datos de los profesores
+                var cursorRequest = store.openCursor();
+
+                // Manejar éxito al abrir el cursor
+                cursorRequest.onsuccess = function(event) {
+                    var cursor = event.target.result;
+
+                    if (cursor) {
+                        console.log('ID: ' , cursor.key); // Utilizar cursor.key para obtener la clave
+                        console.log('Nombre: ' , cursor.value.nombre);
+                        console.log('Especialidad: ' , cursor.value.especialidad);
+
+                        cursor.continue();
+                    }
+                };
+            };
+
+            // Manejar actualizaciones de la base de datos
+            request.onupgradeneeded = function (event) {
+                var db = event.target.result;
+
+                // Crear un objeto store "profesores" con un campo ID autoincremental
+                var store = db.createObjectStore('profesores', { autoIncrement: true });
+
+                // Crear índices para los campos "nombre" y "especialidad"
+                store.createIndex('nombreIndex', 'nombre', { unique: false });
+                store.createIndex('especialidadIndex', 'especialidad', { unique: false });
+            };
+        });
+    </script>
+</body>
+</html>

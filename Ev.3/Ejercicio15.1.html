@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inserción de productos</title>
+</head>
+
+<body>
+    <h1>Inserción de productos</h1>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var request = window.indexedDB.open('Productos', 1);
+
+            request.onerror = function (event) {
+                console.log('Error al abrir la base de datos');
+            };
+
+            request.onsuccess = function (event) {
+                var db = event.target.result;
+
+                var transaction = db.transaction(['productos'], 'readwrite');
+                var store = transaction.objectStore('productos');
+
+                var productData = [
+                    { nombre: 'Monitor 1', categoria: 'Monitores' },
+                    { nombre: 'Monitor 2', categoria: 'Monitores' },
+                    { nombre: 'Monitor 3', categoria: 'Monitores' },
+                    { nombre: 'Teclado 1', categoria: 'Teclados' },
+                    { nombre: 'Teclado 2', categoria: 'Teclados' },
+                    { nombre: 'Teclado 3', categoria: 'Teclados' },
+                    { nombre: 'Ratón 1', categoria: 'Ratones' },
+                    { nombre: 'Ratón 2', categoria: 'Ratones' },
+                    { nombre: 'Ratón 3', categoria: 'Ratones' },
+                    { nombre: 'Portatil 1', categoria: 'Portatiles' },
+                    { nombre: 'Portatil 2', categoria: 'Portatiles' },
+                    { nombre: 'Portatil 3', categoria: 'Portatiles' }
+                ];
+
+                productData.forEach(function (producto) {
+                    store.add(producto);
+                });
+
+                var request = store.openCursor();
+
+                request.onsuccess = function (event) {
+                    var cursor = event.target.result;
+
+                    if (cursor) {
+                        console.log('ID: ', cursor.key);
+                        console.log('Nombre: ', cursor.value.nombre);
+                        console.log('Categoria: ', cursor.value.categoria);
+
+                        cursor.continue();
+                    }
+                };
+            };
+
+            request.onupgradeneeded = function (event) {
+                var db = event.target.result;
+                var store = db.createObjectStore('productos', { keyPath: 'id', autoIncrement: true });
+                store.createIndex('categoriaIndex', 'categoria', { unique: false });
+                store.createIndex('nombreIndex', 'nombre', { unique: false });
+
+            };
+        });
+    </script>
+</body>
+
+</html>

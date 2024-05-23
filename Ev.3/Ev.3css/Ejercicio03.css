@@ -1,0 +1,53 @@
+#principal {
+    width: 680px;
+    padding: 20px;
+    background-color: #A4A4A4;
+    border-radius: 20px;
+    margin: 0 auto;
+    align-items: center;
+    text-align: center;
+}
+
+#contenido {
+    width: 500px;
+    min-height: 100px;
+    padding: 10px;
+    background-color: #F0F0F0;
+    border-radius: 10px;
+    margin: 0 auto;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+#editor {
+    width: 560px;
+    padding: 15px;
+    background-color: #93837F;
+    border-radius: 10px;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.boton {
+    width: 25px;
+    height: 25px;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#botones {
+    width: 500px;
+    padding: 12px;
+    background-color: #848484;
+    margin: 15px auto;
+    border-radius: 15px;
+}
+
+h2 {
+    background: #585858;
+    border: 3px solid white;
+    color: white;
+
+}
+

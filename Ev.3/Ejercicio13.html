@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar profesores por especialidad</title>
+
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+    <label for="busqueda">Busca por especialidad!</label>
+    <br>
+    <br>
+    <input type="text" id="busqueda">
+    <button id="buscar">Buscar</button>
+    <table id="profesores">
+
+        <h2>Resultados de la busqueda</h2>
+        <ul id="resultados"></ul>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Abrir o crear la base de datos "Profesores" con la versión 1 //
+                var request = window.indexedDB.open('Profesores', 1);
+
+                // Manejar errores al abrir la base de datos //
+                request.onerror = function (event) {
+                    console.log('Error al abrir la base de datos');
+                };
+
+                // Manejar éxito al abrir la base de datos //
+                request.onsuccess = function (event) {
+                    var db = event.target.result;
+
+                    // Evento para buscar por especialidad //
+                    buscar.addEventListener('click', function () {
+                        var transaction = db.transaction(['profesores'], 'readonly');
+                        var store = transaction.objectStore('profesores');
+
+                        resultados.innerHTML = '';
+                        var cursor = store.openCursor();
+                        cursor.onsuccess = function (event) {
+                            var cursor = event.target.result;
+                            if (cursor) {
+                                if (cursor.value.especialidad.toLowerCase().includes(busqueda.value.toLowerCase())) {
+                                    var li = document.createElement('li');
+                                    li.textContent = 'Nombre' + ' - ' + cursor.value.nombre + ' - ' + 'Especialidad' + ' - ' + cursor.value.especialidad;
+                                    resultados.appendChild(li);
+                                }
+                                cursor.continue();
+                            }
+                        };
+                    })
+
+
+                };
+
+                // Manejar actualizaciones de la base de datos //
+                request.onupgradeneeded = function (event) {
+                    var db = event.target.result;
+
+                    // Crear un objeto store "profesores" con un campo ID autoincremental //
+                    var store = db.createObjectStore('profesores', { autoIncrement: true });
+
+                    // Crear índices para los campos "nombre" y "especialidad" //
+                    store.createIndex('nombreIndex', 'nombre', { unique: false });
+                    store.createIndex('especialidadIndex', 'especialidad', { unique: false });
+                };
+            });
+        </script>
+</body>
+
+</html>

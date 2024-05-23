@@ -1,0 +1,103 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminación de Contactos</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            align-items: center;
+            position: relative;
+            margin-left: 25%;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Contactos</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Accion</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var request = window.indexedDB.open('Contactos', 1);
+
+            request.onerror = function (event) {
+                console.log('Error al abrir la base de datos');
+            };
+
+            request.onsuccess = function (event) {
+                var db = event.target.result;
+
+                var transaction = db.transaction(['Contactos'], 'readwrite');
+                var store = transaction.objectStore('Contactos');
+                var cursorRequest = store.openCursor();
+
+                cursorRequest.onsuccess = function (event) {
+                    var cursor = event.target.result;
+                    while (cursor) {
+                        var contacto = cursor.value;
+                        var contactosTable = document.querySelector('tbody');
+                        var row = contactosTable.insertRow();
+                        var idCell = row.insertCell(0);
+                        var nombreCell = row.insertCell(1);
+                        var accionCell = row.insertCell(2);
+                        idCell.textContent = contacto.id;
+                        nombreCell.textContent = contacto.nombre;
+                        var deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Eliminar';
+                        deleteButton.onclick = function () {
+                            var deleteTransaction = db.transaction(['Contactos'], 'readwrite');
+                            var deleteStore = deleteTransaction.objectStore('Contactos');
+                            deleteStore.delete(contacto.id);
+                            row.remove();
+                        };
+                        accionCell.appendChild(deleteButton);
+
+                        cursor = cursor.continue();
+                    }
+                };
+            };
+
+            request.onerror = function (event) {
+                console.log('Error al agregar el contacto');
+            };
+
+            request.onupgradeneeded = function (event) {
+                var db = event.target.result;
+                var store = db.createObjectStore('Contactos', { keyPath: 'id' });
+            };
+        });
+
+    </script>
+</body>
+
+</html>
