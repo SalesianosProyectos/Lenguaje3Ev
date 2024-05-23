@@ -5,25 +5,24 @@
     <link rel="stylesheet" href="Ev.3css/Ejercicio05.css" .css" type="text/css">
 
     <style>
-        
+
     </style>
 
     <script type="application/javascript">
         window.onload = mostrar;
-        
+
         function mostrar() {
-    cesta.innerHTML = "";
-    if (sessionStorage.length == 0)
-        cesta.innerHTML = "<h5> No tienes productos en el carrito</h5>";
-    else
-        cesta.innerHTML = "<table class='pro' width = 90% ><tr><th>Producto</th><th>Unidades</th><th>Eliminar</th></tr></table>";
-    for (i = 0; i < sessionStorage.length; i++) {
-        var key = sessionStorage.key(i);
-        if (key !== 'IsThisFirstTime_Log_From_LiveServer') {
-            cesta.innerHTML += "<table class='pro' width=90%><tr><td>" + key + "</td<td>" + sessionStorage.getItem(key) + "</td><td><input type=button value=Quitar onclick=eliminar('" + key + "')></td></tr></table>";
+            cesta.innerHTML = "";
+            if (sessionStorage.length == 0) {
+                cesta.innerHTML = "No hay productos en la cesta";
+            } else
+                cesta.innerHTML = "<table class='pro' width=90%><><th>PRODUCTO</th><th>CANTIDAD</th><th>ELIMINAR</th></tr>";
+            for (i = 0; i < sessionStorage.length; i++) {
+                var clave = sessionStorage.key(i);
+                var valor = sessionStorage.getItem(clave);
+                cesta.innerHTML += "<table class='pro' width='90%'><tr><td>" + clave + "</td><td>" + valor + "</td><td><input type='button' value='Eliminar' onclick='eliminar(\"" + clave + "\")'></td></tr></table>";
+            }
         }
-    }
-}
 
         function almacenar(codigo) {
             sessionStorage.clear();
@@ -57,27 +56,32 @@
                 </tr>
                 <tr>
                     <td><img src="imgs/Iphone14.jpg"></td>
-                    <td><span id="d1"> Iphone14. iOS es el sistema operativo móvil más personal y seguro del mundo. </span> </td>
+                    <td><span id="d1"> Iphone14. iOS es el sistema operativo móvil más personal y seguro del mundo.
+                        </span> </td>
                     <td><input type="button" value="Comprar" onclick="almacenar('Iphone14')"></td>
                 </tr>
                 <tr>
                     <td><img src="imgs/Iphone15.jpg"></td>
-                    <td><span id="d2"> Iphone15. iOS es el sistema operativo móvil más personal y seguro del mundo. </span> </td>
+                    <td><span id="d2"> Iphone15. iOS es el sistema operativo móvil más personal y seguro del mundo.
+                        </span> </td>
                     <td><input type="button" value="Comprar" onclick="almacenar('Iphone15')"></td>
                 </tr>
                 <tr>
                     <td><img src="imgs/MacBook.jpg"></td>
-                    <td><span id="d3"> MacBook Air. macOS es el sistema operativo de ordenador más avanzado del mundo. </span> </td>
+                    <td><span id="d3"> MacBook Air. macOS es el sistema operativo de ordenador más avanzado del mundo.
+                        </span> </td>
                     <td><input type="button" value="Comprar" onclick="almacenar('MacBook')"></td>
                 </tr>
                 <tr>
                     <td><img src="imgs/MacBookPro.jpg"></td>
-                    <td><span id="d4">MacBook Pro. macOS es el sistema operativo de ordenador más avanzado del mundo. </span> </td>
+                    <td><span id="d4">MacBook Pro. macOS es el sistema operativo de ordenador más avanzado del mundo.
+                        </span> </td>
                     <td><input type="button" value="Comprar" onclick="almacenar('MacBook')"></td>
                 </tr>
                 <tr>
                     <td><img src="imgs/iMac.png"></td>
-                    <td><span id="d5">iMac. macOS es el sistema operativo de ordenador más avanzado del mundo. </span> </td>
+                    <td><span id="d5">iMac. macOS es el sistema operativo de ordenador más avanzado del mundo. </span>
+                    </td>
                     <td><input type="button" value="Comprar" onclick="almacenar('iMac')"></td>
                 </tr>
             </table>
