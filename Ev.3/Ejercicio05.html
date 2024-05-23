@@ -16,7 +16,7 @@
             if (sessionStorage.length == 0) {
                 cesta.innerHTML = "No hay productos en la cesta";
             } else
-                cesta.innerHTML = "<table class='pro' width=90%><><th>PRODUCTO</th><th>CANTIDAD</th><th>ELIMINAR</th></tr>";
+                cesta.innerHTML = "<table class='pro' width=90%><th>PRODUCTO</th><th>CANTIDAD</th><th>ELIMINAR</th></tr>";
             for (i = 0; i < sessionStorage.length; i++) {
                 var clave = sessionStorage.key(i);
                 var valor = sessionStorage.getItem(clave);
